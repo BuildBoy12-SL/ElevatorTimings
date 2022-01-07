@@ -9,41 +9,33 @@ namespace RandomElevatorTime
 {
     using System;
     using Exiled.API.Features;
-    using HarmonyLib;
 
     /// <summary>
     /// The main plugin class.
     /// </summary>
     public class Plugin : Plugin<Config>
     {
-        private Harmony harmony;
-
-        /// <summary>
-        /// Gets a static instance of the <see cref="Plugin"/> class.
-        /// </summary>
-        public static Plugin Instance { get; private set; }
+        private EventHandlers eventHandlers;
 
         /// <inheritdoc />
         public override string Author { get; } = "Build";
 
         /// <inheritdoc/>
-        public override Version RequiredExiledVersion { get; } = new Version(2, 10, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(4, 2, 2);
 
         /// <inheritdoc />
         public override void OnEnabled()
         {
-            Instance = this;
-            harmony = new Harmony($"build.randomElevatorTimings.{DateTime.UtcNow.Ticks}");
-            harmony.PatchAll();
+            eventHandlers = new EventHandlers(this);
+            Exiled.Events.Handlers.Player.InteractingElevator += eventHandlers.OnInteractingElevator;
             base.OnEnabled();
         }
 
         /// <inheritdoc />
         public override void OnDisabled()
         {
-            harmony?.UnpatchAll(harmony.Id);
-            harmony = null;
-            Instance = null;
+            Exiled.Events.Handlers.Player.InteractingElevator -= eventHandlers.OnInteractingElevator;
+            eventHandlers = null;
             base.OnDisabled();
         }
     }
