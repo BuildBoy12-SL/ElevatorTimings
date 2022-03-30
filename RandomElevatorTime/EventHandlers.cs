@@ -27,11 +27,17 @@ namespace RandomElevatorTime
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnInteractingElevator(InteractingElevatorEventArgs)"/>
         public void OnInteractingElevator(InteractingElevatorEventArgs ev)
         {
+            if (plugin.Config.UseStaticTime)
+            {
+                ev.Lift.MovingSpeed = plugin.Config.StaticTime;
+                return;
+            }
+
             if (plugin.Config.ElevatorTimings == null || plugin.Config.ElevatorTimings.IsEmpty())
                 return;
 
             ElevatorTimings elevatorTimings = plugin.Config.ElevatorTimings[Random.Range(0, plugin.Config.ElevatorTimings.Count)];
-            ev.Lift.movingSpeed = Random.Range(elevatorTimings.Minimum, elevatorTimings.Maximum);
+            ev.Lift.MovingSpeed = Random.Range(elevatorTimings.Minimum, elevatorTimings.Maximum);
         }
     }
 }

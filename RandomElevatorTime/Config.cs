@@ -19,6 +19,18 @@ namespace RandomElevatorTime
         public bool IsEnabled { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a value indicating whether <see cref="StaticTime"/> should be used instead of <see cref="ElevatorTimings"/>.
+        /// </summary>
+        [Description("Whether static_time should be used instead of elevator_timings.")]
+        public bool UseStaticTime { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets the speed of a lift.
+        /// </summary>
+        [Description("The speed of a lift.")]
+        public float StaticTime { get; set; } = 3f;
+
+        /// <summary>
         /// Gets or sets the collection of which random elevator timings are chosen.
         /// </summary>
         [Description("The collection of which random elevator timings are chosen.")]
